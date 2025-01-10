@@ -8,3 +8,12 @@
 - <https://github.com/charmbracelet/bubbletea?tab=readme-ov-file>
 - <https://github.com/jroimartin/gocui>
 - <https://github.com/mum4k/termdash>
+
+## chart
+
+- https://github.com/guptarohit/asciigraph?tab=readme-ov-file
+
+## Release
+
+- <https://goreleaser.com/>
+- <https://github.com/goreleaser/goreleaser-action>

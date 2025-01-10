@@ -1,37 +1,61 @@
 package main
 
 import (
-	"github.com/rivo/tview"
+	"fmt"
+	"log"
+
+	"github.com/jroimartin/gocui"
 )
 
-func main() {
-	newPrimitive := func(text string) tview.Primitive {
-		return tview.NewTextView().
-			SetTextAlign(tview.AlignCenter).
-			SetText(text)
+func layout(g *gocui.Gui) error {
+	maxX, maxY := g.Size()
+
+	// Create a view for the table
+	if v, err := g.SetView("table", maxX/4, maxY/4, 3*maxX/4, 3*maxY/4); err != nil {
+		if err != gocui.ErrUnknownView {
+			return err
+		}
+		v.Title = "Simple Table"
+		v.Wrap = true
+
+		// Define table content
+		headers := []string{"ID", "Name", "Age"}
+		rows := [][]string{
+			{"1", "Alice", "30"},
+			{"2", "Bob", "25"},
+			{"3", "Charlie", "35"},
+		}
+
+		// Print the table
+		fmt.Fprintf(v, "%-5s %-15s %-5s\n", headers[0], headers[1], headers[2])
+		fmt.Fprintln(v, "---------------------------")
+		for _, row := range rows {
+			fmt.Fprintf(v, "%-5s %-15s %-5s\n", row[0], row[1], row[2])
+		}
 	}
-	menu := newPrimitive("Menu")
-	main := newPrimitive("Main content")
-	sideBar := newPrimitive("Side Bar")
+	return nil
+}
 
-	grid := tview.NewGrid().
-		SetRows(3, 0, 3).
-		SetColumns(30, 0, 30).
-		SetBorders(true).
-		AddItem(newPrimitive("Header"), 0, 0, 1, 3, 0, 0, false).
-		AddItem(newPrimitive("Footer"), 2, 0, 1, 3, 0, 0, false)
+func quit(g *gocui.Gui, v *gocui.View) error {
+	return gocui.ErrQuit
+}
 
-	// Layout for screens narrower than 100 cells (menu and side bar are hidden).
-	grid.AddItem(menu, 0, 0, 0, 0, 0, 0, false).
-		AddItem(main, 1, 0, 1, 3, 0, 0, false).
-		AddItem(sideBar, 0, 0, 0, 0, 0, 0, false)
+func main() {
+	g, err := gocui.NewGui(gocui.OutputNormal)
+	if err != nil {
+		log.Panicln(err)
+	}
+	defer g.Close()
 
-	// Layout for screens wider than 100 cells.
-	grid.AddItem(menu, 1, 0, 1, 1, 0, 100, false).
-		AddItem(main, 1, 1, 1, 1, 0, 100, false).
-		AddItem(sideBar, 1, 2, 1, 1, 0, 100, false)
+	g.SetManagerFunc(layout)
 
-	if err := tview.NewApplication().SetRoot(grid, true).SetFocus(grid).Run(); err != nil {
-		panic(err)
+	// Add keybinding to quit
+	if err := g.SetKeybinding("", gocui.KeyCtrlC, gocui.ModNone, quit); err != nil {
+		log.Panicln(err)
+	}
+
+	// Start the GUI main loop
+	if err := g.MainLoop(); err != nil && err != gocui.ErrQuit {
+		log.Panicln(err)
 	}
 }
