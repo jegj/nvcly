@@ -9,6 +9,7 @@ import (
 )
 
 func main() {
+	// TODO: CHECK ERROR
 	nvidiasmi.GetNvidiaSmiStats()
 	if err := ui.Init(); err != nil {
 		log.Fatalf("failed to initialize termui: %v", err)
@@ -62,18 +63,15 @@ func main() {
 
 	ui.Render(grid)
 	uiEvents := ui.PollEvents()
-	for {
-		select {
-		case e := <-uiEvents:
-			switch e.ID {
-			case "q", "<C-c>":
-				return
-			case "<Resize>":
-				payload := e.Payload.(ui.Resize)
-				grid.SetRect(0, 0, payload.Width, payload.Height)
-				ui.Clear()
-				ui.Render(grid)
-			}
+	for e := range uiEvents {
+		switch e.ID {
+		case "q", "<C-c>":
+			return
+		case "<Resize>":
+			payload := e.Payload.(ui.Resize)
+			grid.SetRect(0, 0, payload.Width, payload.Height)
+			ui.Clear()
+			ui.Render(grid)
 		}
 	}
 }
