@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	ui "github.com/gizak/termui/v3"
@@ -9,10 +10,13 @@ import (
 )
 
 func main() {
-	// TODO: CHECK ERROR
-	nvidiasmi.GetNvidiaSmiStats()
+	stat, err := nvidiasmi.GetNvidiaSmiStats()
+	if err != nil {
+		log.Fatalf("failed to collect nvcly stats: %v", err)
+	}
+
 	if err := ui.Init(); err != nil {
-		log.Fatalf("failed to initialize termui: %v", err)
+		log.Fatalf("failed to initialize nvcly: %v", err)
 	}
 	defer ui.Close()
 
@@ -22,36 +26,25 @@ func main() {
 
 	main := widgets.NewList()
 	main.Title = "Attached GPUs"
-	main.Rows = []string{
-		"[0] github.com/gizak/termui/v3",
-		"[1] [你好，世界](fg:blue)",
-		"[2] [こんにちは世界](fg:red)",
-		"[3] [color](fg:white,bg:green) output",
-		"[4] output.go",
-		"[5] random_out.go",
-		"[6] dashboard.go",
-		"[7] foo",
-		"[8] bar",
-		"[9] baz",
-	}
+	main.Rows = []string{}
 	main.TextStyle = ui.NewStyle(ui.ColorYellow)
+	for _, gpu := range stat.GPU {
+		main.Rows = append(main.Rows, fmt.Sprintf("%s(%s)", gpu.ProductName, gpu.Uuid))
+	}
 	main.WrapText = false
+	main.SelectedRow = 0 // Highlight the first row
+	main.BorderStyle.Fg = ui.ColorYellow
+	main.SelectedRowStyle = ui.NewStyle(ui.ColorWhite, ui.ColorGreen, ui.ModifierBold)
 
 	sidebar := widgets.NewList()
 	sidebar.Title = "General Info"
 	sidebar.Rows = []string{
-		"[0] github.com/gizak/termui/v3",
-		"[1] [你好，世界](fg:blue)",
-		"[2] [こんにちは世界](fg:red)",
-		"[3] [color](fg:white,bg:green) output",
-		"[4] output.go",
-		"[5] random_out.go",
-		"[6] dashboard.go",
-		"[7] foo",
-		"[8] bar",
-		"[9] baz",
+		fmt.Sprintf("Driver Version: %s", stat.DriverVersion),
+		fmt.Sprintf("CUDA Version: %s", stat.CudaVersion),
+		fmt.Sprintf("AttachedGpus: %d", stat.AttachedGpus),
 	}
-	sidebar.TextStyle = ui.NewStyle(ui.ColorYellow)
+	sidebar.TextStyle = ui.NewStyle(ui.ColorWhite, ui.ColorBlack, ui.ModifierBold)
+	sidebar.SelectedRowStyle = ui.NewStyle(ui.ColorWhite, ui.ColorBlack, ui.ModifierBold)
 	sidebar.WrapText = false
 
 	grid.Set(
