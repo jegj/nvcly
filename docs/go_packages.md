@@ -1,6 +1,6 @@
 # Go References
 
-- <https://github.com/gizak/termui> deprecated
+- <https://github.com/gizak/termui>
 - <https://github.com/wtfutil/wtf?tab=readme-ov-file>
 - <https://github.com/gdamore/tcell/blob/main/README.md>
 - <https://github.com/nsf/termbox-go>
@@ -11,7 +11,7 @@
 
 ## chart
 
-- https://github.com/guptarohit/asciigraph?tab=readme-ov-file
+- <https://github.com/guptarohit/asciigraph?tab=readme-ov-file>
 
 ## Release
 
