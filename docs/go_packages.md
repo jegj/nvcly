@@ -8,6 +8,8 @@
 - <https://github.com/charmbracelet/bubbletea?tab=readme-ov-file>
 - <https://github.com/jroimartin/gocui>
 - <https://github.com/mum4k/termdash>
+- <https://github.com/bcicen/ctop>
+- <https://github.com/cjbassi/gotop>
 
 ## chart
 
