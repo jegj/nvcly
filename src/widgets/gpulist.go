@@ -2,36 +2,31 @@ package widgets
 
 import (
 	"fmt"
-	"log"
 
 	ui "github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
 	"github.com/jegj/nvcly/src/nvidiasmi"
 )
 
-type ListWidget struct {
+type GpuListWidget struct {
 	*widgets.List
 }
 
-func NewListWidget() *ListWidget {
-	self := &ListWidget{
+func NewGpuListWidget(stat *nvidiasmi.NvidiaSmiLog) *GpuListWidget {
+	self := &GpuListWidget{
 		List: widgets.NewList(),
 	}
 	self.Title = " Attached GPUs "
-	self.update()
-	self.TextStyle = ui.NewStyle(ui.ColorYellow)
+	self.update(stat)
+	self.TextStyle = ui.NewStyle(ui.ColorWhite)
 	self.SelectedRow = 0 // Highlight the first row
-	self.BorderStyle.Fg = ui.ColorYellow
+	self.BorderStyle.Fg = ui.ColorGreen
 	self.SelectedRowStyle = ui.NewStyle(ui.ColorWhite, ui.ColorGreen, ui.ModifierBold)
 	self.WrapText = false
 	return self
 }
 
-func (self *ListWidget) update() {
-	stat, err := nvidiasmi.GetNvidiaSmiStats()
-	if err != nil {
-		log.Printf("error recieved from gopsutil: %v", err)
-	}
+func (self *GpuListWidget) update(stat *nvidiasmi.NvidiaSmiLog) {
 	for _, gpu := range stat.GPU {
 		self.Rows = append(self.Rows, fmt.Sprintf("%s(%s)", gpu.ProductName, gpu.Uuid))
 	}
