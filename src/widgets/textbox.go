@@ -17,7 +17,8 @@ func NewTextBox(title string, text string) *TextBoxWidget {
 	}
 	self.Title = fmt.Sprintf("  %s  ", title)
 	self.Text = text
-	self.TextStyle = ui.NewStyle(ui.ColorWhite)
+	self.TextStyle = ui.NewStyle(ui.ColorWhite, ui.ColorClear, ui.ModifierBold)
+	self.TitleStyle = ui.NewStyle(ui.ColorGreen, ui.ColorClear, ui.ModifierBold)
 	self.WrapText = false
 	self.BorderStyle.Fg = ui.ColorGreen
 	return self

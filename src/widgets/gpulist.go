@@ -18,7 +18,8 @@ func NewGpuListWidget(stat *nvidiasmi.NvidiaSmiLog) *GpuListWidget {
 	}
 	self.Title = " Attached GPUs "
 	self.update(stat)
-	self.TextStyle = ui.NewStyle(ui.ColorWhite)
+	self.TextStyle = ui.NewStyle(ui.ColorWhite, ui.ColorClear, ui.ModifierBold)
+	self.TitleStyle = ui.NewStyle(ui.ColorGreen, ui.ColorClear, ui.ModifierBold)
 	self.SelectedRow = 0 // Highlight the first row
 	self.BorderStyle.Fg = ui.ColorGreen
 	self.SelectedRowStyle = ui.NewStyle(ui.ColorWhite, ui.ColorGreen, ui.ModifierBold)
