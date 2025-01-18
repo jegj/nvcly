@@ -3,6 +3,7 @@ package widgets
 import (
 	"fmt"
 	"log"
+	"strconv"
 	"time"
 
 	ui "github.com/gizak/termui/v3"
@@ -12,20 +13,23 @@ import (
 
 type TextBoxGaugeWidget struct {
 	*widgets.Paragraph
+	nvidiasmiQuery string
 	updateInterval time.Duration
 }
 
-func NewTextBoxGauge(title string, text string, updateInterval time.Duration) *TextBoxGaugeWidget {
+func NewTextBoxGauge(title string, nvidiasmiQuery string, updateInterval time.Duration) *TextBoxGaugeWidget {
 	self := &TextBoxGaugeWidget{
-		Paragraph: widgets.NewParagraph(),
+		Paragraph:      widgets.NewParagraph(),
+		nvidiasmiQuery: nvidiasmiQuery,
+		updateInterval: updateInterval,
 	}
 	self.updateInterval = updateInterval
 	self.Title = fmt.Sprintf("  %s  ", title)
-	self.Text = text
 	self.TextStyle = ui.NewStyle(ui.ColorWhite, ui.ColorClear, ui.ModifierBold)
 	self.TitleStyle = ui.NewStyle(ui.ColorGreen, ui.ColorClear, ui.ModifierBold)
 	self.WrapText = false
 	self.BorderStyle.Fg = ui.ColorGreen
+	self.update()
 
 	go func() {
 		for range time.NewTicker(self.updateInterval).C {
@@ -38,9 +42,26 @@ func NewTextBoxGauge(title string, text string, updateInterval time.Duration) *T
 }
 
 func (self *TextBoxGaugeWidget) update() {
-	utilization, err := nvidiasmi.GetNvidiaSmiQueryGpu()
+	utilization, err := nvidiasmi.GetNvidiaSmiQueryGpu(self.nvidiasmiQuery)
 	if err != nil {
 		log.Printf("error recieved from nvidiasmi query: %v", err)
 	}
-	self.Text = utilization
+	self.TextStyle = applyStyles(utilization)
+	self.Text = fmt.Sprintf("%s%%", utilization)
+}
+
+// TODO: MOBVE TO UTILS
+func applyStyles(strPercentage string) ui.Style {
+	percentage, err := strconv.Atoi(strPercentage)
+	if err != nil {
+		log.Printf("error casting nvidia-smi stat into number: %v", err)
+	}
+
+	if percentage >= 0 && percentage < 35 {
+		return ui.NewStyle(ui.ColorGreen, ui.ColorClear, ui.ModifierBold)
+	} else if percentage >= 35 && percentage < 70 {
+		return ui.NewStyle(ui.ColorYellow, ui.ColorClear, ui.ModifierBold)
+	} else {
+		return ui.NewStyle(ui.ColorRed, ui.ColorClear, ui.ModifierBold)
+	}
 }

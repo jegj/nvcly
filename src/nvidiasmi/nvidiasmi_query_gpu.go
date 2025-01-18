@@ -1,11 +1,13 @@
 package nvidiasmi
 
 import (
+	"fmt"
 	"os/exec"
+	"strings"
 )
 
-func GetNvidiaSmiQueryGpu() (string, error) {
-	stat, err := RunNvidiaSmiQueryGpuCmd()
+func GetNvidiaSmiQueryGpu(query string) (string, error) {
+	stat, err := runNvidiaSmiQueryGpuCmd(query)
 	if err != nil {
 		return "", err
 	}
@@ -13,9 +15,9 @@ func GetNvidiaSmiQueryGpu() (string, error) {
 	return stat, nil
 }
 
-func RunNvidiaSmiQueryGpuCmd() (string, error) {
+func runNvidiaSmiQueryGpuCmd(query string) (string, error) {
 	app := "nvidia-smi"
-	arg0 := "--query-gpu=utilization.gpu"
+	arg0 := fmt.Sprintf("--query-gpu=%s", query)
 	arg1 := "--format=csv,noheader,nounits"
 
 	cmd := exec.Command(app, arg0, arg1)
@@ -23,5 +25,5 @@ func RunNvidiaSmiQueryGpuCmd() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return string(stdout), nil
+	return string(strings.TrimSpace(string(stdout))), nil
 }
