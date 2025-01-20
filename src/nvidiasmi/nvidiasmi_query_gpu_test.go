@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestValidatorFormatting(t *testing.T) {
+func TestGetNvidiaSmiQueryGpu(t *testing.T) {
 	tests := []struct {
 		want     map[string]string
 		input    string
