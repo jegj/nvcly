@@ -1,12 +1,21 @@
 package nvidiasmi
 
 import (
+	"errors"
 	"fmt"
 	"os/exec"
 	"strings"
 )
 
+var ALLOWED_QUERIES = map[string]bool{
+	"utilization.gpu":    true,
+	"utilization.memory": true,
+}
+
 func GetNvidiaSmiQueryGpu(query string) (string, error) {
+	if _, exists := ALLOWED_QUERIES[query]; !exists {
+		return "", errors.New("query not allowed")
+	}
 	stat, err := runNvidiaSmiQueryGpuCmd(query)
 	if err != nil {
 		return "", err
