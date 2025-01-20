@@ -50,7 +50,6 @@ func (self *TextBoxGaugeWidget) update() {
 	self.Text = fmt.Sprintf("%s%%", utilization)
 }
 
-// TODO: MOBVE TO UTILS
 func applyStyles(strPercentage string) ui.Style {
 	percentage, err := strconv.Atoi(strPercentage)
 	if err != nil {
