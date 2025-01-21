@@ -8,8 +8,11 @@ import (
 )
 
 var ALLOWED_QUERIES = map[string]bool{
-	"utilization.gpu":    true,
-	"utilization.memory": true,
+	"utilization.gpu":     true,
+	"utilization.memory":  true,
+	"utilization.encoder": true,
+	"utilization.decoder": true,
+	"fan.speed":           true,
 }
 
 func GetNvidiaSmiQueryGpu(query string) (string, error) {
@@ -34,5 +37,5 @@ func runNvidiaSmiQueryGpuCmd(query string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return string(strings.TrimSpace(string(stdout))), nil
+	return strings.TrimSpace(string(stdout)), nil
 }

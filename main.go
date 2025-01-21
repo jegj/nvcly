@@ -36,6 +36,9 @@ func main() {
 	selectionMessage := nvclyw.NewTextBox(":Press G to switch GPUs", defaultGpuName)
 	gpuUsage := nvclyw.NewTextBoxGauge("Gpu Usage", "utilization.gpu", DEFAULT_TIME_INTERVAL)
 	memUsage := nvclyw.NewTextBoxGauge("Memory Usage", "utilization.memory", DEFAULT_TIME_INTERVAL)
+	encoderUsage := nvclyw.NewTextBoxGauge("Encoder Usage", "utilization.encoder", DEFAULT_TIME_INTERVAL)
+	decoderUsage := nvclyw.NewTextBoxGauge("Decoder Usage", "utilization.decoder", DEFAULT_TIME_INTERVAL)
+	fanSpeed := nvclyw.NewTextBoxGauge("Fan Speed", "fan.speed", DEFAULT_TIME_INTERVAL)
 
 	grid.Set(
 		ui.NewRow(0.25/4,
@@ -47,8 +50,11 @@ func main() {
 			ui.NewCol(1.0, selectionMessage),
 		),
 		ui.NewRow(0.25/4,
-			ui.NewCol(1.0/6, gpuUsage),
-			ui.NewCol(1.0/6, memUsage),
+			ui.NewCol(1.0/7, gpuUsage),
+			ui.NewCol(1.0/7, memUsage),
+			ui.NewCol(1.0/7, encoderUsage),
+			ui.NewCol(1.0/7, decoderUsage),
+			ui.NewCol(1.0/7, fanSpeed),
 		),
 		ui.NewRow(3.0/4,
 			ui.NewCol(1, main),
@@ -73,7 +79,7 @@ func main() {
 				ui.Render(grid)
 			}
 		case <-ticker:
-			ui.Render(gpuUsage, memUsage)
+			ui.Render(gpuUsage, memUsage, encoderUsage, decoderUsage, fanSpeed)
 		}
 	}
 }

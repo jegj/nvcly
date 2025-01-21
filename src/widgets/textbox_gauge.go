@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"strconv"
+	"strings"
 	"time"
 
 	ui "github.com/gizak/termui/v3"
@@ -51,16 +52,24 @@ func (self *TextBoxGaugeWidget) update() {
 }
 
 func applyStyles(strPercentage string) ui.Style {
-	percentage, err := strconv.Atoi(strPercentage)
-	if err != nil {
-		log.Printf("error casting nvidia-smi stat into number: %v", err)
-	}
+	if isDataSupported(strPercentage) {
+		percentage, err := strconv.Atoi(strPercentage)
+		if err != nil {
+			log.Printf("error casting nvidia-smi stat into number: %v", err)
+		}
 
-	if percentage >= 0 && percentage < 35 {
-		return ui.NewStyle(ui.ColorGreen, ui.ColorClear, ui.ModifierBold)
-	} else if percentage >= 35 && percentage < 70 {
-		return ui.NewStyle(ui.ColorYellow, ui.ColorClear, ui.ModifierBold)
+		if percentage >= 0 && percentage < 35 {
+			return ui.NewStyle(ui.ColorGreen, ui.ColorClear, ui.ModifierBold)
+		} else if percentage >= 35 && percentage < 70 {
+			return ui.NewStyle(ui.ColorYellow, ui.ColorClear, ui.ModifierBold)
+		} else {
+			return ui.NewStyle(ui.ColorRed, ui.ColorClear, ui.ModifierBold)
+		}
 	} else {
-		return ui.NewStyle(ui.ColorRed, ui.ColorClear, ui.ModifierBold)
+		return ui.NewStyle(ui.ColorMagenta, ui.ColorClear, ui.ModifierBold)
 	}
+}
+
+func isDataSupported(output string) bool {
+	return !strings.Contains(output, "N/A")
 }
