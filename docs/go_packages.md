@@ -10,6 +10,7 @@
 - <https://github.com/mum4k/termdash>
 - <https://github.com/bcicen/ctop>
 - <https://github.com/cjbassi/gotop>
+- <phttps://github.com/Syllo/nvtop>
 
 ## chart
 
