@@ -47,29 +47,33 @@ func (self *TextBoxGaugeWidget) update() {
 	if err != nil {
 		log.Printf("error recieved from nvidiasmi query: %v", err)
 	}
-	self.TextStyle = applyStyles(utilization)
-	self.Text = fmt.Sprintf("%s%%", utilization)
-}
-
-func applyStyles(strPercentage string) ui.Style {
-	if isDataSupported(strPercentage) {
-		percentage, err := strconv.Atoi(strPercentage)
-		if err != nil {
-			log.Printf("error casting nvidia-smi stat into number: %v", err)
-		}
-
-		if percentage >= 0 && percentage < 35 {
-			return ui.NewStyle(ui.ColorGreen, ui.ColorClear, ui.ModifierBold)
-		} else if percentage >= 35 && percentage < 70 {
-			return ui.NewStyle(ui.ColorYellow, ui.ColorClear, ui.ModifierBold)
-		} else {
-			return ui.NewStyle(ui.ColorRed, ui.ColorClear, ui.ModifierBold)
-		}
+	if isDataSupported(utilization) {
+		self.TextStyle = applyDataStyles(utilization)
+		self.Text = fmt.Sprintf("%s%%", utilization)
 	} else {
-		return ui.NewStyle(ui.ColorMagenta, ui.ColorClear, ui.ModifierBold)
+		self.TextStyle = applyNoDataStyles()
+		self.Text = utilization
 	}
 }
 
 func isDataSupported(output string) bool {
 	return !strings.Contains(output, "N/A")
+}
+
+func applyNoDataStyles() ui.Style {
+	return ui.NewStyle(ui.ColorMagenta, ui.ColorClear, ui.ModifierBold)
+}
+
+func applyDataStyles(strPercentage string) ui.Style {
+	percentage, err := strconv.Atoi(strPercentage)
+	if err != nil {
+		log.Printf("error casting nvidia-smi stat into number: %v", err)
+	}
+	if percentage >= 0 && percentage < 35 {
+		return ui.NewStyle(ui.ColorGreen, ui.ColorClear, ui.ModifierBold)
+	} else if percentage >= 35 && percentage < 70 {
+		return ui.NewStyle(ui.ColorYellow, ui.ColorClear, ui.ModifierBold)
+	} else {
+		return ui.NewStyle(ui.ColorRed, ui.ColorClear, ui.ModifierBold)
+	}
 }
