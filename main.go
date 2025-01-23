@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"strconv"
 	"time"
 
 	ui "github.com/gizak/termui/v3"
@@ -32,7 +31,6 @@ func main() {
 	main := nvclyw.NewGpuListWidget(stat)
 	driverVersion := nvclyw.NewTextBox("Driver Version", stat.DriverVersion)
 	cudaVersion := nvclyw.NewTextBox("Cuda Version", stat.CudaVersion)
-	attachedGpus := nvclyw.NewTextBox("Attached Gpus", strconv.Itoa(stat.AttachedGpus))
 	selectionMessage := nvclyw.NewTextBox(":Press G to switch GPUs", defaultGpuName)
 	gpuUsage := nvclyw.NewTextBoxGauge("Gpu Usage", "utilization.gpu", DEFAULT_TIME_INTERVAL)
 	memUsage := nvclyw.NewTextBoxGauge("Memory Usage", "utilization.memory", DEFAULT_TIME_INTERVAL)
@@ -42,12 +40,9 @@ func main() {
 
 	grid.Set(
 		ui.NewRow(0.25/4,
-			ui.NewCol(1.0/3, driverVersion),
-			ui.NewCol(1.0/3, cudaVersion),
-			ui.NewCol(1.0/3, attachedGpus),
-		),
-		ui.NewRow(0.25/4,
-			ui.NewCol(1.0, selectionMessage),
+			ui.NewCol(1.0/7, driverVersion),
+			ui.NewCol(1.0/7, cudaVersion),
+			ui.NewCol(5.0/7, selectionMessage),
 		),
 		ui.NewRow(0.25/4,
 			ui.NewCol(1.0/7, gpuUsage),
