@@ -25,7 +25,7 @@ func NewTextBoxGauge(title string, nvidiasmiQuery string, updateInterval time.Du
 		updateInterval: updateInterval,
 	}
 	self.updateInterval = updateInterval
-	self.Title = fmt.Sprintf("  %s  ", title)
+	self.Title = fmt.Sprintf("%s", title)
 	self.TextStyle = ui.NewStyle(ui.ColorWhite, ui.ColorClear, ui.ModifierBold)
 	self.TitleStyle = ui.NewStyle(ui.ColorGreen, ui.ColorClear, ui.ModifierBold)
 	self.WrapText = false
@@ -52,6 +52,7 @@ func (self *TextBoxGaugeWidget) update() {
 		self.Text = fmt.Sprintf("%s%%", utilization)
 	} else {
 		self.TextStyle = applyNoDataStyles()
+		utilization = "N/A"
 		self.Text = utilization
 	}
 }
