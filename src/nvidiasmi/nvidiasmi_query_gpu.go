@@ -13,6 +13,7 @@ var ALLOWED_QUERIES = map[string]bool{
 	"utilization.encoder": true,
 	"utilization.decoder": true,
 	"fan.speed":           true,
+	"pstate":              true,
 }
 
 func GetNvidiaSmiQueryGpu(query string) (string, error) {

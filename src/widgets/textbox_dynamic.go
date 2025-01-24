@@ -12,21 +12,23 @@ import (
 	"github.com/jegj/nvcly/src/nvidiasmi"
 )
 
-type TextBoxGaugeWidget struct {
+type TextBoxDynamicWidget struct {
 	*widgets.Paragraph
-	nvidiasmiQuery string
-	updateInterval time.Duration
+	nvidiasmiQuery   string
+	updateInterval   time.Duration
+	isPercentageData bool
 }
 
-func NewTextBoxGauge(title string, nvidiasmiQuery string, updateInterval time.Duration) *TextBoxGaugeWidget {
-	self := &TextBoxGaugeWidget{
-		Paragraph:      widgets.NewParagraph(),
-		nvidiasmiQuery: nvidiasmiQuery,
-		updateInterval: updateInterval,
+func NewTextBoxDynamicWidget(title string, nvidiasmiQuery string, updateInterval time.Duration, isPercentageData bool) *TextBoxDynamicWidget {
+	self := &TextBoxDynamicWidget{
+		Paragraph:        widgets.NewParagraph(),
+		nvidiasmiQuery:   nvidiasmiQuery,
+		updateInterval:   updateInterval,
+		isPercentageData: isPercentageData,
 	}
 	self.updateInterval = updateInterval
-	self.Title = fmt.Sprintf("%s", title)
-	self.TextStyle = ui.NewStyle(ui.ColorWhite, ui.ColorClear, ui.ModifierBold)
+	self.Title = title
+	self.TextStyle = applyStaticDataStyle()
 	self.TitleStyle = ui.NewStyle(ui.ColorGreen, ui.ColorClear, ui.ModifierBold)
 	self.WrapText = false
 	self.BorderStyle.Fg = ui.ColorGreen
@@ -42,18 +44,22 @@ func NewTextBoxGauge(title string, nvidiasmiQuery string, updateInterval time.Du
 	return self
 }
 
-func (self *TextBoxGaugeWidget) update() {
-	utilization, err := nvidiasmi.GetNvidiaSmiQueryGpu(self.nvidiasmiQuery)
+func (self *TextBoxDynamicWidget) update() {
+	data, err := nvidiasmi.GetNvidiaSmiQueryGpu(self.nvidiasmiQuery)
 	if err != nil {
 		log.Printf("error recieved from nvidiasmi query: %v", err)
 	}
-	if isDataSupported(utilization) {
-		self.TextStyle = applyDataStyles(utilization)
-		self.Text = fmt.Sprintf("%s%%", utilization)
+	if isDataSupported(data) {
+		if self.isPercentageData {
+			self.TextStyle = applyDataStyles(data)
+			self.Text = fmt.Sprintf("%s%%", data)
+		} else {
+			self.TextStyle = applyStaticDataStyle()
+			self.Text = data
+		}
 	} else {
 		self.TextStyle = applyNoDataStyles()
-		utilization = "N/A"
-		self.Text = utilization
+		self.Text = "N/A"
 	}
 }
 
@@ -65,8 +71,8 @@ func applyNoDataStyles() ui.Style {
 	return ui.NewStyle(ui.ColorMagenta, ui.ColorClear, ui.ModifierBold)
 }
 
-func applyDataStyles(strPercentage string) ui.Style {
-	percentage, err := strconv.Atoi(strPercentage)
+func applyDataStyles(data string) ui.Style {
+	percentage, err := strconv.Atoi(data)
 	if err != nil {
 		log.Printf("error casting nvidia-smi stat into number: %v", err)
 	}
@@ -77,4 +83,8 @@ func applyDataStyles(strPercentage string) ui.Style {
 	} else {
 		return ui.NewStyle(ui.ColorRed, ui.ColorClear, ui.ModifierBold)
 	}
+}
+
+func applyStaticDataStyle() ui.Style {
+	return ui.NewStyle(ui.ColorYellow, ui.ColorClear, ui.ModifierBold)
 }

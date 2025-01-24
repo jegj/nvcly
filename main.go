@@ -32,11 +32,10 @@ func main() {
 	driverVersion := nvclyw.NewTextBox("Driver Version", stat.DriverVersion)
 	cudaVersion := nvclyw.NewTextBox("Cuda Version", stat.CudaVersion)
 	selectionMessage := nvclyw.NewTextBox(":Press G to switch GPUs", defaultGpuName)
-	gpuUsage := nvclyw.NewTextBoxGauge("Gpu Usage", "utilization.gpu", DEFAULT_TIME_INTERVAL)
-	memUsage := nvclyw.NewTextBoxGauge("Memory Usage", "utilization.memory", DEFAULT_TIME_INTERVAL)
-	encoderUsage := nvclyw.NewTextBoxGauge("Encoder Usage", "utilization.encoder", DEFAULT_TIME_INTERVAL)
-	decoderUsage := nvclyw.NewTextBoxGauge("Decoder Usage", "utilization.decoder", DEFAULT_TIME_INTERVAL)
-	fanSpeed := nvclyw.NewTextBoxGauge("Fan Speed", "fan.speed", DEFAULT_TIME_INTERVAL)
+	gpuUsage := nvclyw.NewTextBoxDynamicWidget("Gpu Usage", "utilization.gpu", DEFAULT_TIME_INTERVAL, true)
+	memUsage := nvclyw.NewTextBoxDynamicWidget("Memory Usage", "utilization.memory", DEFAULT_TIME_INTERVAL, true)
+	fanSpeed := nvclyw.NewTextBoxDynamicWidget("Fan Speed", "fan.speed", DEFAULT_TIME_INTERVAL, true)
+	performanceState := nvclyw.NewTextBoxDynamicWidget("Per.State", "pstate", DEFAULT_TIME_INTERVAL, false)
 
 	grid.Set(
 		ui.NewRow(0.25/4,
@@ -47,8 +46,10 @@ func main() {
 		ui.NewRow(0.25/4,
 			ui.NewCol(1.0/7, gpuUsage),
 			ui.NewCol(1.0/7, memUsage),
-			ui.NewCol(1.0/7, encoderUsage),
-			ui.NewCol(1.0/7, decoderUsage),
+			ui.NewCol(1.0/7, fanSpeed),
+			ui.NewCol(1.0/7, performanceState),
+			ui.NewCol(1.0/7, fanSpeed),
+			ui.NewCol(1.0/7, fanSpeed),
 			ui.NewCol(1.0/7, fanSpeed),
 		),
 		ui.NewRow(3.0/4,
@@ -74,7 +75,7 @@ func main() {
 				ui.Render(grid)
 			}
 		case <-ticker:
-			ui.Render(gpuUsage, memUsage, encoderUsage, decoderUsage, fanSpeed)
+			ui.Render(gpuUsage, memUsage, fanSpeed, performanceState)
 		}
 	}
 }
