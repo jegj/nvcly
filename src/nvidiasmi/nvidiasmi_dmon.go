@@ -2,7 +2,6 @@ package nvidiasmi
 
 import (
 	"fmt"
-	"log"
 	"os/exec"
 	"strings"
 )
@@ -24,7 +23,6 @@ func runNvidiaSmiDmonQueryGpuCmd(selectQuery string, count int) (string, error) 
 	arg3 := "--format=csv,noheader,nounit"
 
 	cmd := exec.Command(app, arg0, arg1, arg2, arg3)
-	log.Printf("===>%s", cmd.String())
 	stdout, err := cmd.Output()
 	if err != nil {
 		return "", err
