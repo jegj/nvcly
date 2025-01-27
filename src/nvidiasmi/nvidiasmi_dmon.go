@@ -1,12 +1,25 @@
 package nvidiasmi
 
 import (
+	"errors"
 	"fmt"
 	"os/exec"
 	"strings"
 )
 
+var ALLOWED_DMON_QUERIES = map[string]bool{
+	"t": true,
+}
+
 func GetNvidiaSmiDmonQueryGpu(selectQuery string, count int) (string, error) {
+	if _, exists := ALLOWED_DMON_QUERIES[selectQuery]; !exists {
+		return "", errors.New("dmon query not allowed")
+	}
+
+	if count < 1 {
+		return "", errors.New("dmon count invalid")
+	}
+
 	stat, err := runNvidiaSmiDmonQueryGpuCmd(selectQuery, count)
 	if err != nil {
 		return "", err
