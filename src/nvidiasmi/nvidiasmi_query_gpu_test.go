@@ -6,16 +6,15 @@ import (
 
 func TestGetNvidiaSmiQueryGpu(t *testing.T) {
 	tests := []struct {
-		want     map[string]string
 		input    string
 		testName string
 	}{
 		{
-			testName: "Must not return an error for utilization.gpu when the query is empty",
+			testName: "Must return an error for utilization.gpu when the query is empty",
 			input:    "",
 		},
 		{
-			testName: "Must not return an error for utilization.gpu when the query is invalid",
+			testName: "Must return an error for utilization.gpu when the query is invalid",
 			input:    "rand_input_query",
 		},
 	}
