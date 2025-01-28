@@ -28,7 +28,6 @@ func main() {
 	grid.SetRect(0, 0, termWidth, termHeight)
 
 	defaultGpuName := fmt.Sprintf("%s(%s)", stat.GPU[0].ProductName, stat.GPU[0].Uuid)
-	main := nvclyw.NewGpuListWidget(stat)
 	driverVersion := nvclyw.NewTextBox("Driver Version", stat.DriverVersion)
 	cudaVersion := nvclyw.NewTextBox("Cuda Version", stat.CudaVersion)
 	selectionMessage := nvclyw.NewTextBox(":Press G to switch GPUs", defaultGpuName)
@@ -36,6 +35,7 @@ func main() {
 	memUsage := nvclyw.NewTextBoxDynamicWidget("Memory Usage", "utilization.memory", DEFAULT_TIME_INTERVAL, true)
 	fanSpeed := nvclyw.NewTextBoxDynamicWidget("Fan Speed", "fan.speed", DEFAULT_TIME_INTERVAL, true)
 	performanceState := nvclyw.NewTextBoxDynamicWidget("Per.State", "pstate", DEFAULT_TIME_INTERVAL, false)
+	pciCurrentLinkGen := nvclyw.NewTextBoxDynamicWidget("PCIe Curr.Link Gen", "pcie.link.gen.current", DEFAULT_TIME_INTERVAL, false)
 
 	grid.Set(
 		ui.NewRow(0.25/4,
@@ -48,13 +48,15 @@ func main() {
 			ui.NewCol(1.0/7, memUsage),
 			ui.NewCol(1.0/7, fanSpeed),
 			ui.NewCol(1.0/7, performanceState),
-			ui.NewCol(1.0/7, fanSpeed),
+			ui.NewCol(1.0/7, pciCurrentLinkGen),
 			ui.NewCol(1.0/7, fanSpeed),
 			ui.NewCol(1.0/7, fanSpeed),
 		),
-		ui.NewRow(3.0/4,
-			ui.NewCol(1, main),
-		),
+		/*
+			ui.NewRow(3.0/4,
+				ui.NewCol(1, main),
+			),
+		*/
 	)
 
 	ticker := time.NewTicker(DEFAULT_TIME_INTERVAL).C
@@ -75,7 +77,7 @@ func main() {
 				ui.Render(grid)
 			}
 		case <-ticker:
-			ui.Render(gpuUsage, memUsage, fanSpeed, performanceState)
+			ui.Render(gpuUsage, memUsage, fanSpeed, performanceState, pciCurrentLinkGen)
 		}
 	}
 }
