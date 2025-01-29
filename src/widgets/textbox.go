@@ -1,8 +1,6 @@
 package widgets
 
 import (
-	"fmt"
-
 	ui "github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
 )
@@ -15,7 +13,7 @@ func NewTextBox(title string, text string) *TextBoxWidget {
 	self := &TextBoxWidget{
 		Paragraph: widgets.NewParagraph(),
 	}
-	self.Title = fmt.Sprintf("%s", title)
+	self.Title = title
 	self.Text = text
 	self.TextStyle = ui.NewStyle(ui.ColorWhite, ui.ColorClear, ui.ModifierBold)
 	self.TitleStyle = ui.NewStyle(ui.ColorGreen, ui.ColorClear, ui.ModifierBold)
