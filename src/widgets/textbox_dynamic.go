@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"strconv"
-	"strings"
 	"time"
 
 	ui "github.com/gizak/termui/v3"
@@ -28,7 +27,7 @@ func NewTextBoxDynamicWidget(title string, nvidiasmiQuery string, updateInterval
 	}
 	self.updateInterval = updateInterval
 	self.Title = title
-	self.TextStyle = applyStaticDataStyle()
+	self.TextStyle = STATIC_DATA_STYLE
 	self.TitleStyle = ui.NewStyle(ui.ColorGreen, ui.ColorClear, ui.ModifierBold)
 	self.WrapText = false
 	self.BorderStyle.Fg = ui.ColorGreen
@@ -54,21 +53,13 @@ func (self *TextBoxDynamicWidget) update() {
 			self.TextStyle = applyDataStyles(data)
 			self.Text = fmt.Sprintf("%s%%", data)
 		} else {
-			self.TextStyle = applyStaticDataStyle()
+			self.TextStyle = STATIC_DATA_STYLE
 			self.Text = data
 		}
 	} else {
-		self.TextStyle = applyNoDataStyles()
+		self.TextStyle = NO_DATA_STYLE
 		self.Text = "N/A"
 	}
-}
-
-func isDataSupported(output string) bool {
-	return !strings.Contains(output, "N/A")
-}
-
-func applyNoDataStyles() ui.Style {
-	return ui.NewStyle(ui.ColorMagenta, ui.ColorClear, ui.ModifierBold)
 }
 
 func applyDataStyles(data string) ui.Style {
@@ -83,8 +74,4 @@ func applyDataStyles(data string) ui.Style {
 	} else {
 		return ui.NewStyle(ui.ColorRed, ui.ColorClear, ui.ModifierBold)
 	}
-}
-
-func applyStaticDataStyle() ui.Style {
-	return ui.NewStyle(ui.ColorYellow, ui.ColorClear, ui.ModifierBold)
 }

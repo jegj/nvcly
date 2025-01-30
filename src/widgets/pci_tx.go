@@ -23,7 +23,7 @@ func NewPciTxRxWidget(title string, updateInterval time.Duration, tx bool) *PciT
 		tx:             tx,
 	}
 	self.Title = title
-	self.TextStyle = applyStaticDataStyle()
+	self.TextStyle = STATIC_DATA_STYLE
 	self.TitleStyle = ui.NewStyle(ui.ColorGreen, ui.ColorClear, ui.ModifierBold)
 	self.WrapText = false
 	self.BorderStyle.Fg = ui.ColorGreen
@@ -49,7 +49,7 @@ func (self *PciTxRxWidget) update() {
 			text := self.processData(data)
 			self.Text = fmt.Sprintf("%s MB/s", text)
 		} else {
-			self.TextStyle = applyNoDataStyles()
+			self.TextStyle = NO_DATA_STYLE
 			self.Text = "N/A"
 		}
 	}
