@@ -7,9 +7,12 @@ import (
 )
 
 var (
+	ERR_QUERY_STYLE   ui.Style = ui.NewStyle(ui.ColorRed, ui.ColorClear, ui.ModifierBold)
 	NO_DATA_STYLE     ui.Style = ui.NewStyle(ui.ColorMagenta, ui.ColorClear, ui.ModifierBold)
 	STATIC_DATA_STYLE ui.Style = ui.NewStyle(ui.ColorYellow, ui.ColorClear, ui.ModifierBold)
 )
+
+var ERR_QUERY_TEXT string = "<err>"
 
 func isDataSupported(output string) bool {
 	return !strings.Contains(output, "N/A")

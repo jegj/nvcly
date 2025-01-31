@@ -46,19 +46,21 @@ func NewTextBoxDynamicWidget(title string, nvidiasmiQuery string, updateInterval
 func (self *TextBoxDynamicWidget) update() {
 	data, err := nvidiasmi.GetNvidiaSmiQueryGpu(self.nvidiasmiQuery)
 	if err != nil {
-		log.Printf("error recieved from nvidiasmi query: %v", err)
-	}
-	if isDataSupported(data) {
-		if self.isPercentageData {
-			self.TextStyle = applyDataStyles(data)
-			self.Text = fmt.Sprintf("%s%%", data)
-		} else {
-			self.TextStyle = STATIC_DATA_STYLE
-			self.Text = data
-		}
+		self.TextStyle = ERR_QUERY_STYLE
+		self.Text = ERR_QUERY_TEXT
 	} else {
-		self.TextStyle = NO_DATA_STYLE
-		self.Text = "N/A"
+		if isDataSupported(data) {
+			if self.isPercentageData {
+				self.TextStyle = applyDataStyles(data)
+				self.Text = fmt.Sprintf("%s%%", data)
+			} else {
+				self.TextStyle = STATIC_DATA_STYLE
+				self.Text = data
+			}
+		} else {
+			self.TextStyle = NO_DATA_STYLE
+			self.Text = "N/A"
+		}
 	}
 }
 
