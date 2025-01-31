@@ -42,8 +42,8 @@ func NewPciTxRxWidget(title string, updateInterval time.Duration, tx bool) *PciT
 func (self *PciTxRxWidget) update() {
 	data, err := nvidiasmi.GetNvidiaSmiDmonQueryGpu("t", 1)
 	if err != nil {
-		self.TextStyle = ui.NewStyle(ui.ColorRed, ui.ColorClear, ui.ModifierBold)
-		self.Text = "<err>"
+		self.TextStyle = ERR_QUERY_STYLE
+		self.Text = ERR_QUERY_TEXT
 	} else {
 		if isDataSupported(data) {
 			text := self.processData(data)
