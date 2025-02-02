@@ -23,6 +23,7 @@ type NvidiaSmiGpu struct {
 	PerformanceState    string                 `xml:"performance_state"`
 	FanSpeed            string                 `xml:"fan_speed"`
 	Utilization         NvidiaSmiUtilization   `xml:"utilization"`
+	Processes           []NvidiaSmiProcesses   `xml:"processes"`
 }
 
 type NvidiaSmiFbMemoryUsage struct {
@@ -39,6 +40,19 @@ type NvidiaSmiUtilization struct {
 	DecoderUtil string `xml:"decoder_util"`
 	JpegUtil    string `xml:"jpeg_util"`
 	OfaUtil     string `xml:"ofa_util"`
+}
+
+type NvidiaSmiProcesses struct {
+	ProcessInfo NvidiaSmiProcess `xml:"process_info"`
+}
+
+type NvidiaSmiProcess struct {
+	GpuInstanceId     string `xml:"gpu_instance_id"`
+	ComputeInstanceId string `xml:"compute_instance_id"`
+	Pid               string `xml:"pid"`
+	Type              string `xml:"type"`
+	ProcessName       string `xml:"process_name"`
+	UsedMemory        string `xml:"used_memory"`
 }
 
 func GetNvidiaSmiStats() (*NvidiaSmiLog, error) {
