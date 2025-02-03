@@ -23,7 +23,7 @@ type NvidiaSmiGpu struct {
 	PerformanceState    string                 `xml:"performance_state"`
 	FanSpeed            string                 `xml:"fan_speed"`
 	Utilization         NvidiaSmiUtilization   `xml:"utilization"`
-	Processes           []NvidiaSmiProcesses   `xml:"processes"`
+	Processes           NvidiaSmiProcesses     `xml:"processes"`
 }
 
 type NvidiaSmiFbMemoryUsage struct {
@@ -43,10 +43,10 @@ type NvidiaSmiUtilization struct {
 }
 
 type NvidiaSmiProcesses struct {
-	ProcessInfo NvidiaSmiProcess `xml:"process_info"`
+	ProcessInfo []NvidiaSmiProcessInfo `xml:"process_info"`
 }
 
-type NvidiaSmiProcess struct {
+type NvidiaSmiProcessInfo struct {
 	GpuInstanceId     string `xml:"gpu_instance_id"`
 	ComputeInstanceId string `xml:"compute_instance_id"`
 	Pid               string `xml:"pid"`
