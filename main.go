@@ -38,6 +38,7 @@ func main() {
 	pciCurrentLinkGen := nvclyw.NewTextBoxDynamicWidget("PCIe Curr.Link", "pcie.link.gen.current", DEFAULT_TIME_INTERVAL, false)
 	pciTx := nvclyw.NewPciTxRxWidget("PCI Tx", DEFAULT_TIME_INTERVAL, true)
 	pciRx := nvclyw.NewPciTxRxWidget("PCI Rx", DEFAULT_TIME_INTERVAL, false)
+	processes := nvclyw.NewProcessesWidget("Processes", DEFAULT_TIME_INTERVAL, stat.GPU[0].Processes.ProcessInfo)
 
 	grid.Set(
 		ui.NewRow(0.25/4,
@@ -54,11 +55,9 @@ func main() {
 			ui.NewCol(1.0/7, pciTx),
 			ui.NewCol(1.0/7, pciRx),
 		),
-		/*
-			ui.NewRow(3.0/4,
-				ui.NewCol(1, main),
-			),
-		*/
+		ui.NewRow(3.0/4,
+			ui.NewCol(1, processes),
+		),
 	)
 
 	ticker := time.NewTicker(DEFAULT_TIME_INTERVAL).C
@@ -79,7 +78,7 @@ func main() {
 				ui.Render(grid)
 			}
 		case <-ticker:
-			ui.Render(gpuUsage, memUsage, fanSpeed, performanceState, pciCurrentLinkGen, pciTx, pciRx)
+			ui.Render(gpuUsage, memUsage, fanSpeed, performanceState, pciCurrentLinkGen, pciTx, pciRx, processes)
 		}
 	}
 }
