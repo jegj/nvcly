@@ -55,7 +55,7 @@ func main() {
 			ui.NewCol(1.0/7, pciTx),
 			ui.NewCol(1.0/7, pciRx),
 		),
-		ui.NewRow(3.0/4,
+		ui.NewRow(2.0/4,
 			ui.NewCol(1, processes),
 		),
 	)
