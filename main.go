@@ -36,8 +36,8 @@ func main() {
 	fanSpeed := nvclyw.NewTextBoxDynamicWidget("Fan Speed", "fan.speed", DEFAULT_TIME_INTERVAL, true)
 	performanceState := nvclyw.NewTextBoxDynamicWidget("Per.State", "pstate", DEFAULT_TIME_INTERVAL, false)
 	pciCurrentLinkGen := nvclyw.NewTextBoxDynamicWidget("PCIe Curr.Link", "pcie.link.gen.current", DEFAULT_TIME_INTERVAL, false)
-	pciTx := nvclyw.NewPciTxRxWidget("PCI Tx", DEFAULT_TIME_INTERVAL, true)
-	pciRx := nvclyw.NewPciTxRxWidget("PCI Rx", DEFAULT_TIME_INTERVAL, false)
+	pciTx := nvclyw.NewPciTxWidget("PCI Tx", DEFAULT_TIME_INTERVAL)
+	pciRx := nvclyw.NewPciRxWidget("PCI Rx", DEFAULT_TIME_INTERVAL)
 	processes := nvclyw.NewProcessesWidget("Processes", DEFAULT_TIME_INTERVAL, stat.GPU[0].Processes.ProcessInfo)
 
 	grid.Set(

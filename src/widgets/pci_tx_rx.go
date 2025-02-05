@@ -13,17 +13,22 @@ import (
 type PciTxRxWidget struct {
 	*widgets.Paragraph
 	updateInterval time.Duration
-	tx             bool
+	reverseIndex   int
 }
 
-func NewPciTxRxWidget(title string, updateInterval time.Duration, tx bool) *PciTxRxWidget {
+const (
+	TX_REVERSE_INDEX int = 1
+	RX_REVERSE_INDEX int = 2
+)
+
+func newPciTxRxWidget(title string, updateInterval time.Duration, reverseIndex int) *PciTxRxWidget {
 	self := &PciTxRxWidget{
 		Paragraph:      widgets.NewParagraph(),
 		updateInterval: updateInterval,
-		tx:             tx,
+		reverseIndex:   reverseIndex,
 	}
 	self.Title = title
-	self.TextStyle = STATIC_DATA_STYLE
+	self.TextStyle = ui.NewStyle(ui.ColorCyan, ui.ColorClear, ui.ModifierBold)
 	self.TitleStyle = ui.NewStyle(ui.ColorGreen, ui.ColorClear, ui.ModifierBold)
 	self.WrapText = false
 	self.BorderStyle.Fg = ui.ColorGreen
@@ -37,6 +42,14 @@ func NewPciTxRxWidget(title string, updateInterval time.Duration, tx bool) *PciT
 		}
 	}()
 	return self
+}
+
+func NewPciTxWidget(title string, updateInterval time.Duration) *PciTxRxWidget {
+	return newPciTxRxWidget(title, updateInterval, TX_REVERSE_INDEX)
+}
+
+func NewPciRxWidget(title string, updateInterval time.Duration) *PciTxRxWidget {
+	return newPciTxRxWidget(title, updateInterval, RX_REVERSE_INDEX)
 }
 
 func (self *PciTxRxWidget) update() {
@@ -58,9 +71,5 @@ func (self *PciTxRxWidget) update() {
 func (self *PciTxRxWidget) processData(data string) string {
 	parts := strings.Split(data, ",")
 	partsLen := len(parts)
-	if self.tx {
-		return strings.TrimSpace(parts[partsLen-1])
-	} else {
-		return strings.TrimSpace(parts[partsLen-2])
-	}
+	return strings.TrimSpace(parts[partsLen-self.reverseIndex])
 }
