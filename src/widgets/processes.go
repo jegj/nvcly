@@ -27,6 +27,8 @@ func NewProcessesWidget(title string, updateInterval time.Duration, initialData 
 	self.TextStyle = STATIC_DATA_STYLE
 	self.TitleStyle = ui.NewStyle(ui.ColorGreen, ui.ColorClear, ui.ModifierBold)
 	self.BorderStyle.Fg = ui.ColorGreen
+	self.RowStyles[0] = ui.NewStyle(ui.ColorGreen, ui.ColorClear, ui.ModifierBold)
+	self.FillRow = true
 
 	go func() {
 		for range time.NewTicker(self.updateInterval).C {
