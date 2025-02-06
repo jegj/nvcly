@@ -12,7 +12,10 @@ var (
 	STATIC_DATA_STYLE ui.Style = ui.NewStyle(ui.ColorYellow, ui.ColorClear, ui.ModifierBold)
 )
 
-var ERR_QUERY_TEXT string = "<err>"
+const (
+	ERR_QUERY_TEXT string = "<err>"
+	NO_DATA_TEXT   string = "N/A"
+)
 
 func isDataSupported(output string) bool {
 	return !strings.Contains(output, "N/A")
