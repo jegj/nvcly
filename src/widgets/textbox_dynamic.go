@@ -28,9 +28,9 @@ func NewTextBoxDynamicWidget(title string, nvidiasmiQuery string, updateInterval
 	self.updateInterval = updateInterval
 	self.Title = title
 	self.TextStyle = STATIC_DATA_STYLE
-	self.TitleStyle = ui.NewStyle(ui.ColorGreen, ui.ColorClear, ui.ModifierBold)
+	self.BorderStyle = DEFAULT_BORDER_STYLE
+	self.TitleStyle = DEFAULT_TITLE_STYLE
 	self.WrapText = false
-	self.BorderStyle.Fg = ui.ColorGreen
 	self.update()
 
 	go func() {

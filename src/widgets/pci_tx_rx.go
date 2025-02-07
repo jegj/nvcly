@@ -29,9 +29,9 @@ func newPciTxRxWidget(title string, updateInterval time.Duration, reverseIndex i
 	}
 	self.Title = title
 	self.TextStyle = ui.NewStyle(ui.ColorCyan, ui.ColorClear, ui.ModifierBold)
-	self.TitleStyle = ui.NewStyle(ui.ColorGreen, ui.ColorClear, ui.ModifierBold)
+	self.BorderStyle = DEFAULT_BORDER_STYLE
+	self.TitleStyle = DEFAULT_TITLE_STYLE
 	self.WrapText = false
-	self.BorderStyle.Fg = ui.ColorGreen
 	self.update()
 
 	go func() {

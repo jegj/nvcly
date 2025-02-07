@@ -18,6 +18,8 @@ func NewTemperatureWidget(title string, updateInterval time.Duration) *Temperatu
 		Paragraph:      widgets.NewParagraph(),
 		updateInterval: updateInterval,
 	}
+	self.BorderStyle = DEFAULT_BORDER_STYLE
+	self.TitleStyle = DEFAULT_TITLE_STYLE
 	self.updateInterval = updateInterval
 	self.Title = title
 
@@ -39,7 +41,7 @@ func (self *TemperatureWidget) update() {
 	} else {
 		if isDataSupported(data) {
 			self.TextStyle = STATIC_DATA_STYLE
-			self.Text = fmt.Sprintf("%s °C", data)
+			self.Text = fmt.Sprintf("%s°C", data)
 		} else {
 			self.TextStyle = NO_DATA_STYLE
 			self.Text = NO_DATA_TEXT

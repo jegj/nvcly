@@ -39,6 +39,7 @@ func main() {
 	pciTx := nvclyw.NewPciTxWidget("PCI Tx", DEFAULT_TIME_INTERVAL)
 	pciRx := nvclyw.NewPciRxWidget("PCI Rx", DEFAULT_TIME_INTERVAL)
 	processes := nvclyw.NewProcessesWidget("Processes", DEFAULT_TIME_INTERVAL, stat.GPU[0].Processes.ProcessInfo)
+	temperature := nvclyw.NewTemperatureWidget("Temperature", DEFAULT_TIME_INTERVAL)
 
 	grid.Set(
 		ui.NewRow(0.25/4,
@@ -47,13 +48,16 @@ func main() {
 			ui.NewCol(5.0/7, selectionMessage),
 		),
 		ui.NewRow(0.25/4,
-			ui.NewCol(1.0/7, gpuUsage),
-			ui.NewCol(1.0/7, memUsage),
-			ui.NewCol(1.0/7, fanSpeed),
-			ui.NewCol(1.0/7, performanceState),
-			ui.NewCol(1.0/7, pciCurrentLinkGen),
-			ui.NewCol(1.0/7, pciTx),
-			ui.NewCol(1.0/7, pciRx),
+			ui.NewCol(1.0/4, gpuUsage),
+			ui.NewCol(1.0/4, memUsage),
+			ui.NewCol(1.0/4, fanSpeed),
+			ui.NewCol(1.0/4, temperature),
+		),
+		ui.NewRow(0.25/4,
+			ui.NewCol(1.0/4, performanceState),
+			ui.NewCol(1.0/4, pciCurrentLinkGen),
+			ui.NewCol(1.0/4, pciTx),
+			ui.NewCol(1.0/4, pciRx),
 		),
 		ui.NewRow(2.0/4,
 			ui.NewCol(1, processes),
@@ -78,7 +82,7 @@ func main() {
 				ui.Render(grid)
 			}
 		case <-ticker:
-			ui.Render(gpuUsage, memUsage, fanSpeed, performanceState, pciCurrentLinkGen, pciTx, pciRx, processes)
+			ui.Render(gpuUsage, memUsage, fanSpeed, performanceState, pciCurrentLinkGen, pciTx, pciRx, processes, temperature)
 		}
 	}
 }

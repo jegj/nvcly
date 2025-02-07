@@ -7,9 +7,11 @@ import (
 )
 
 var (
-	ERR_QUERY_STYLE   ui.Style = ui.NewStyle(ui.ColorRed, ui.ColorClear, ui.ModifierBold)
-	NO_DATA_STYLE     ui.Style = ui.NewStyle(ui.ColorMagenta, ui.ColorClear, ui.ModifierBold)
-	STATIC_DATA_STYLE ui.Style = ui.NewStyle(ui.ColorYellow, ui.ColorClear, ui.ModifierBold)
+	ERR_QUERY_STYLE      ui.Style = ui.NewStyle(ui.ColorRed, ui.ColorClear, ui.ModifierBold)
+	NO_DATA_STYLE        ui.Style = ui.NewStyle(ui.ColorMagenta, ui.ColorClear, ui.ModifierBold)
+	STATIC_DATA_STYLE    ui.Style = ui.NewStyle(ui.ColorYellow, ui.ColorClear, ui.ModifierBold)
+	DEFAULT_BORDER_STYLE ui.Style = ui.NewStyle(ui.ColorGreen)
+	DEFAULT_TITLE_STYLE  ui.Style = ui.NewStyle(ui.ColorGreen, ui.ColorClear, ui.ModifierBold)
 )
 
 const (
