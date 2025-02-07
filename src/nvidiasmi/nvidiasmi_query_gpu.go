@@ -8,13 +8,15 @@ import (
 )
 
 var ALLOWED_QUERIES = map[string]bool{
-	"utilization.gpu":       true,
-	"utilization.memory":    true,
-	"utilization.encoder":   true,
-	"utilization.decoder":   true,
-	"fan.speed":             true,
-	"pstate":                true,
-	"pcie.link.gen.current": true,
+	"utilization.gpu":                     true,
+	"utilization.memory":                  true,
+	"utilization.encoder":                 true,
+	"utilization.decoder":                 true,
+	"fan.speed":                           true,
+	"pstate":                              true,
+	"pcie.link.gen.current":               true,
+	"temperature.gpu":                     true,
+	"utilization.gpu, utilization.memory": true,
 }
 
 func GetNvidiaSmiQueryGpu(query string) (string, error) {
