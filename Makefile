@@ -4,6 +4,8 @@ run:
 	go run main.go
 test:
 	go test -v ./...
+build: main.go
+	go build -o nvcly $<
 vet:
 	go vet main.go
 vet_shadow:
