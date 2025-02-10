@@ -20,7 +20,6 @@ func NewTemperatureWidget(title string, updateInterval time.Duration) *Temperatu
 	}
 	self.BorderStyle = DEFAULT_BORDER_STYLE
 	self.TitleStyle = DEFAULT_TITLE_STYLE
-	self.updateInterval = updateInterval
 	self.Title = title
 
 	go func() {

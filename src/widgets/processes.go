@@ -19,7 +19,6 @@ func NewProcessesWidget(title string, updateInterval time.Duration, initialData 
 		Table:          widgets.NewTable(),
 		updateInterval: updateInterval,
 	}
-	self.updateInterval = updateInterval
 	self.Title = title
 	self.RowSeparator = true
 	self.BorderStyle = ui.NewStyle(ui.ColorGreen)

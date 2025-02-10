@@ -25,7 +25,6 @@ func NewTextBoxDynamicWidget(title string, nvidiasmiQuery string, updateInterval
 		updateInterval:   updateInterval,
 		isPercentageData: isPercentageData,
 	}
-	self.updateInterval = updateInterval
 	self.Title = title
 	self.TextStyle = STATIC_DATA_STYLE
 	self.BorderStyle = DEFAULT_BORDER_STYLE
