@@ -40,6 +40,7 @@ func main() {
 	pciRx := nvclyw.NewPciRxWidget("PCI Rx", DEFAULT_TIME_INTERVAL)
 	processes := nvclyw.NewProcessesWidget("Processes", DEFAULT_TIME_INTERVAL, stat.GPU[0].Processes.ProcessInfo)
 	temperature := nvclyw.NewTemperatureWidget("Temperature", DEFAULT_TIME_INTERVAL)
+	usage := nvclyw.NewUsageWidget("Usage", DEFAULT_TIME_INTERVAL)
 
 	grid.Set(
 		ui.NewRow(0.25/4,
@@ -60,6 +61,9 @@ func main() {
 			ui.NewCol(1.0/4, pciRx),
 		),
 		ui.NewRow(2.0/4,
+			ui.NewCol(1.0/1, usage),
+		),
+		ui.NewRow(2.0/5,
 			ui.NewCol(1, processes),
 		),
 	)
@@ -82,7 +86,7 @@ func main() {
 				ui.Render(grid)
 			}
 		case <-ticker:
-			ui.Render(gpuUsage, memUsage, fanSpeed, performanceState, pciCurrentLinkGen, pciTx, pciRx, processes, temperature)
+			ui.Render(gpuUsage, memUsage, fanSpeed, performanceState, pciCurrentLinkGen, pciTx, pciRx, processes, temperature, usage)
 		}
 	}
 }

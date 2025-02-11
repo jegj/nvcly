@@ -26,13 +26,21 @@ func NewUsageWidget(title string, updateInterval time.Duration) *UsageWidget {
 		}
 		return ps
 	})()
+	sinData2 := (func() []float64 {
+		n := 220
+		ps := make([]float64, n)
+		for i := range ps {
+			ps[i] = 1 + math.Sin(float64(i)/2)
+		}
+		return ps
+	})()
 
 	self.Title = title
-	self.Data = make([][]float64, 1)
+	self.Data = make([][]float64, 2)
 	self.Data[0] = sinData
+	self.Data[1] = sinData2
 	self.AxesColor = ui.ColorGreen
 	self.LineColors[0] = ui.ColorRed
-	self.Marker = widgets.MarkerDot
 	self.BorderStyle = DEFAULT_BORDER_STYLE
 	self.TitleStyle = DEFAULT_TITLE_STYLE
 
