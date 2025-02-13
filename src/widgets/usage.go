@@ -21,22 +21,6 @@ func NewUsageWidget(title string, updateInterval time.Duration) *UsageWidget {
 		Plot:           widgets.NewPlot(),
 		updateInterval: updateInterval,
 	}
-	// sinData := (func() []float64 {
-	// 	n := 220
-	// 	ps := make([]float64, n)
-	// 	for i := range ps {
-	// 		ps[i] = 1 + math.Sin(float64(i)/5)
-	// 	}
-	// 	return ps
-	// })()
-	// sinData2 := (func() []float64 {
-	// 	n := 220
-	// 	ps := make([]float64, n)
-	// 	for i := range ps {
-	// 		ps[i] = 1 + math.Sin(float64(i)/2)
-	// 	}
-	// 	return ps
-	// })()
 
 	self.Data = make([][]float64, 2)
 	self.Data[0] = make([]float64, 10)
