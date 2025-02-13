@@ -6,8 +6,8 @@ import (
 	"time"
 
 	ui "github.com/gizak/termui/v3"
-	"github.com/jegj/nvcly/src/nvidiasmi"
-	nvclyw "github.com/jegj/nvcly/src/widgets"
+	"github.com/jegj/nvcly/nvidiasmi"
+	nvclyw "github.com/jegj/nvcly/widgets"
 )
 
 const DEFAULT_TIME_INTERVAL time.Duration = time.Second
