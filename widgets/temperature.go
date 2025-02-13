@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/gizak/termui/v3/widgets"
-	"github.com/jegj/nvcly/src/nvidiasmi"
+	"github.com/jegj/nvcly/nvidiasmi"
 )
 
 type TemperatureWidget struct {
