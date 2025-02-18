@@ -5,7 +5,7 @@ run:
 test:
 	go test -v ./...
 build: main.go
-	go build -o nvcly $<
+	go build -ldflags="-X 'main.Version=v1.0.0'" -o nvcly $<
 vet:
 	go vet main.go
 vet_shadow:
