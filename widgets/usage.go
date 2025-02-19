@@ -42,6 +42,7 @@ func NewUsageWidget(title string, updateInterval time.Duration) *UsageWidget {
 	return self
 }
 
+// FIXME: When chart reachs the screen size , it does not update it again
 func (self *UsageWidget) update() {
 	data, err := nvidiasmi.GetNvidiaSmiQueryGpu("utilization.gpu,utilization.memory")
 	if err != nil {
