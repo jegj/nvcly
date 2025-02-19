@@ -48,12 +48,12 @@ func (self *UsageWidget) update() {
 		log.Printf("Unable to get usage data from nvidia smi query %v", err)
 	} else {
 		if isDataSupported(data) {
-			gpuUtil, gpuMem, err := self.processData(data)
+			gpuUtil, _, err := self.processData(data)
 			if err != nil {
 				log.Printf("Unable to parse usage data %v", err)
 			} else {
 				self.Data[0] = append(self.Data[0], gpuUtil)
-				self.Data[1] = append(self.Data[1], gpuMem)
+				// self.Data[1] = append(self.Data[1], gpuMem)
 			}
 		} else {
 			log.Println("Unable to get usage data")
