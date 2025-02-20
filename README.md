@@ -1,3 +1,5 @@
 # nvcly
 
-Immersive terminal interface for managing nvidia-smi stats
+Immersive terminal interface for managing nvidia-smi stats for my personal usage
+
+![nvlcy](./docs/nvlcy.png)
