@@ -14,47 +14,47 @@ import (
 type UsageWidget struct {
 	*widgets.Plot
 	updateInterval time.Duration
+	counter        int32
 }
 
 func NewUsageWidget(title string, updateInterval time.Duration) *UsageWidget {
-	self := &UsageWidget{
+	u := &UsageWidget{
 		Plot:           widgets.NewPlot(),
 		updateInterval: updateInterval,
+		counter:        0,
 	}
 
-	self.Data = make([][]float64, 2)
-	self.Data[0] = make([]float64, 10)
-	self.Data[1] = make([]float64, 10)
-	self.Title = title
-	self.AxesColor = ui.ColorGreen
-	self.LineColors[0] = ui.ColorRed
-	self.BorderStyle = DEFAULT_BORDER_STYLE
-	self.TitleStyle = DEFAULT_TITLE_STYLE
-	self.update()
+	u.Data = make([][]float64, 1)
+	u.Data[0] = make([]float64, 250)
+	u.Title = title
+	u.AxesColor = ui.ColorGreen
+	u.LineColors[0] = ui.ColorRed
+	u.BorderStyle = DEFAULT_BORDER_STYLE
+	u.TitleStyle = DEFAULT_TITLE_STYLE
+	u.update()
 	go func() {
-		for range time.NewTicker(self.updateInterval).C {
-			self.Lock()
-			self.update()
-			self.Unlock()
+		for range time.NewTicker(u.updateInterval).C {
+			u.Lock()
+			u.update()
+			u.Unlock()
 		}
 	}()
 
-	return self
+	return u
 }
 
-// FIXME: When chart reachs the screen size , it does not update it again
-func (self *UsageWidget) update() {
+func (u *UsageWidget) update() {
 	data, err := nvidiasmi.GetNvidiaSmiQueryGpu("utilization.gpu,utilization.memory")
 	if err != nil {
 		log.Printf("Unable to get usage data from nvidia smi query %v", err)
 	} else {
 		if isDataSupported(data) {
-			gpuUtil, _, err := self.processData(data)
+			gpuUtil, _, err := u.processData(data)
 			if err != nil {
 				log.Printf("Unable to parse usage data %v", err)
 			} else {
-				self.Data[0] = append(self.Data[0], gpuUtil)
-				// self.Data[1] = append(self.Data[1], gpuMem)
+				u.Data[0][u.counter%250] = gpuUtil
+				u.counter++
 			}
 		} else {
 			log.Println("Unable to get usage data")
@@ -62,7 +62,7 @@ func (self *UsageWidget) update() {
 	}
 }
 
-func (self *UsageWidget) processData(data string) (float64, float64, error) {
+func (u *UsageWidget) processData(data string) (float64, float64, error) {
 	parts := strings.Split(data, ",")
 	gpuUtil, err := strconv.ParseFloat(strings.TrimSpace(parts[0]), 64)
 	if err != nil {
